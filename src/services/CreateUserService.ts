@@ -2,6 +2,7 @@ import User from "../models/User";
 import { getRepository } from "typeorm";
 import { hash } from 'bcryptjs';
 
+import AppError from '../errors/AppError';
 interface Request{
     name: string;
     email: string;
@@ -31,11 +32,11 @@ class CreateUserService {
         const isAValidUser = isAValidName && isAValidEmail ? true: false;
         
         if(!isAValidName){
-            throw Error('Invalid username!')
+            throw new AppError('Invalid username!')
         }
          
         if(!isAValidEmail){
-            throw Error('Invalid email!')
+            throw new AppError('Invalid email!')
         }
 
         const hashedPassword = await hash(password, 8);
