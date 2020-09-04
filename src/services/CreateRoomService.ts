@@ -1,6 +1,5 @@
 import Room from "../models/Room";
 import { getRepository } from "typeorm";
-import { hash } from 'bcryptjs';
 
 import AppError from '../errors/AppError';
 interface Request{

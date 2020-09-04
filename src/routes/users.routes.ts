@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm';
 
 //import TransactionsRepository from '../repositories/TransactionsRepository';
 import CreateUserService from '../services/CreateUserService';
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 
@@ -20,7 +21,7 @@ usersRouter.get('/', async (request, response) => {
   }
 });
 
-usersRouter.post('/', async (request, response) => {
+usersRouter.post('/', ensureAuthenticated, async (request, response) => {
   try {
     const usersRepository = getRepository("User");
 
