@@ -11,7 +11,18 @@ interface Request{
 }
 
 class CreateUserService {
-    
+    private validatePassword(password: string): boolean {
+        let count = 0;
+        let atLeastFourLowerCase = /(.*[a-z].*){4,}/;
+        let atLeastOneUpperCase = /(.*[A-Z].*){1,}/
+        let atLeastTwoNumbers = /(.*[\d].*){2,}/
+        if(password.match(atLeastFourLowerCase) && password.match(atLeastOneUpperCase) && password.match(atLeastTwoNumbers))
+        {
+            return true
+        }
+        return false;
+    }
+
     public async execute({name, email, permission, password}: Request):Promise<User> {
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     
@@ -27,7 +38,9 @@ class CreateUserService {
 
         const isAValidName = name.length > 4 ? true: false;
         const isAValidEmail = emailRegex.test(email) ? true : false;  
-        //TODO VERIFY PASSWORD REGEX (one or more uppercase, 4 or more lowercase, two numbers);
+        
+        if(!this.validatePassword(password))
+            throw new AppError('Invalid Password');
 
         const isAValidUser = isAValidName && isAValidEmail ? true: false;
         
